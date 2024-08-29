@@ -19,7 +19,8 @@ class AnimatedWindow:
 
 
 def run():
-    lidar = RP_A1(scan_type="express", threaded=False, quality=True)
+    use_quality = True
+    lidar = RP_A1(scan_type="express", threaded=False, quality=use_quality)
     window = AnimatedWindow()
     max_side = 13000
     ancles = np.array([[-max_side, -max_side], [-max_side, max_side], [max_side, max_side], [max_side, -max_side], [-max_side, -max_side]]).T
@@ -35,7 +36,7 @@ def run():
             points = -lidar.readCartesian()
 
             if lidar.get_quality:
-                window.ax.scatter(*zip(*points[:2]), c=points[2])
+                window.ax.scatter(*zip(*points[:2]), c=points[2] if use_quality else None)
             window.scatter(points)
             window.scatter(((0, 0), ))  # see the center
             window.refresh()
